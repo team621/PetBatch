@@ -9,9 +9,17 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 public class AbandonmentPublicAPI {
+    //공공 API URL 생성 (지역 조회)
+    public String createRegionURL(String ServiceKey, String uprCd){
+        String requestUrl = "http://openapi.animal.go.kr/openapi/service/rest/abandonmentPublicSrvc/";
+        if(uprCd.equals("")) requestUrl += "sido?ServiceKey="+ServiceKey;
+        else if(!uprCd.equals("")) requestUrl += "sigungu?upr_cd=uprCd&ServiceKey="+ServiceKey;
 
-    //공공 API URL (유기 동물 조회)
-    public String getURL(String ServiceKey, String bgnde, String endde, String pageNo, String numOfRows){
+        return requestUrl;
+    }
+
+    //공공 API URL 생성 (유기동물 조회)
+    public String createURL(String ServiceKey, String bgnde, String endde, String pageNo, String numOfRows){
         String requestUrl = "http://openapi.animal.go.kr/openapi/service/rest/abandonmentPublicSrvc/abandonmentPublic?";
         requestUrl += "ServiceKey="+ServiceKey+"&";
         requestUrl += "bgnde="+bgnde+"&";
@@ -22,8 +30,8 @@ public class AbandonmentPublicAPI {
         return requestUrl;
     }
 
-    //XML 파싱 (호출임)
-    public void parseXML(String URL){
+    //request API
+    public void requestAPI(String URL){
         try{
             DocumentBuilderFactory dbFactoty = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactoty.newDocumentBuilder();
@@ -37,10 +45,9 @@ public class AbandonmentPublicAPI {
             for(int temp = 0; temp < nList.getLength(); temp++){
                 Node nNode = nList.item(temp);
                 if(nNode.getNodeType() == Node.ELEMENT_NODE){
-
                     Element eElement = (Element) nNode;
                     System.out.println("######################");
-                    //System.out.println(eElement.getTextContent());
+                    System.out.println(eElement.getTextContent());
                     System.out.println("careNm  : " + getTagValue("careNm", eElement));
                     System.out.println("colorCd  : " + getTagValue("colorCd", eElement));
                     System.out.println("happenPlace : " + getTagValue("happenPlace", eElement));

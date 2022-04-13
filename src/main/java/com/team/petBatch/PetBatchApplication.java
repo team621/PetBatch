@@ -9,11 +9,18 @@ public class PetBatchApplication {
     public static void main(String[] args) {
         String servieKey = "Z9nM4q9X0WrP6P45oSAZqwt1heXenYmrmXzqdEqNtwmUuucQzaH0vvpPYWLAKcoTTDVOQSzSjlwppeFWhonQHw%3D%3D";
         AbandonmentPublicAPI API = new AbandonmentPublicAPI();
-        String bgnde = args[0];
-        String endde = args[1];
 
-        String URL = API.getURL(servieKey,bgnde,endde,"1","1");
-        //abandonmentPublic.parseXML(URL);
+        //공공 API URL 생성 (시도)
+        String regionURL = API.createRegionURL(servieKey, "");
+        System.out.println("regionURL = " + regionURL);
+
+        //공공 API URL 생성(유기 동물 조회)
+        String URL = API.createURL(servieKey,args[0],args[1],"1","1");
+
+        System.out.println("URL = " + URL);
+
+        //request API
+        //API.requestAPI(URL);
 
 
 
