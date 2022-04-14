@@ -19,16 +19,10 @@ public class AbandonmentVO {
     private String kindCd;
     //보호 지역 (코드)
     @Column(nullable = false)
-    private String regionCd;
-    //보호 지역 (지역명)
-    @Column(nullable = false)
-    private String regionNm;
+    private regionVO protectRegion;
     //보호 도시 (코드)
     @Column(nullable = false)
-    private String cityCd;
-    //보호 도시 (도시명)
-    @Column(nullable = false)
-    private String cityNm;
+    private regionVO protectCity;
     //발견 날짜
     private String happenDate;
     //발견 장소
@@ -52,15 +46,13 @@ public class AbandonmentVO {
     //무게
     private int weight;
 
-    public AbandonmentVO(Long id, int age, String animalType, String kindCd, String regionCd, String regionNm, String cityCd, String cityNm, String happenDate, String happenPlace, String careNm, String careAddress, String thumnail, String image, String processState, char sexCd, String specialMark, int weight) {
+    public AbandonmentVO(Long id, int age, String animalType, String kindCd, regionVO protectRegion, regionVO protectCity, String happenDate, String happenPlace, String careNm, String careAddress, String thumnail, String image, String processState, char sexCd, String specialMark, int weight) {
         this.id = id;
         this.age = age;
         this.animalType = animalType;
         this.kindCd = kindCd;
-        this.regionCd = regionCd;
-        this.regionNm = regionNm;
-        this.cityCd = cityCd;
-        this.cityNm = cityNm;
+        this.protectRegion = protectRegion;
+        this.protectCity = protectCity;
         this.happenDate = happenDate;
         this.happenPlace = happenPlace;
         this.careNm = careNm;
@@ -105,36 +97,20 @@ public class AbandonmentVO {
         this.kindCd = kindCd;
     }
 
-    public String getRegionCd() {
-        return regionCd;
+    public regionVO getProtectRegion() {
+        return protectRegion;
     }
 
-    public void setRegionCd(String regionCd) {
-        this.regionCd = regionCd;
+    public void setProtectRegion(regionVO protectRegion) {
+        this.protectRegion = protectRegion;
     }
 
-    public String getRegionNm() {
-        return regionNm;
+    public regionVO getProtectCity() {
+        return protectCity;
     }
 
-    public void setRegionNm(String regionNm) {
-        this.regionNm = regionNm;
-    }
-
-    public String getCityCd() {
-        return cityCd;
-    }
-
-    public void setCityCd(String cityCd) {
-        this.cityCd = cityCd;
-    }
-
-    public String getCityNm() {
-        return cityNm;
-    }
-
-    public void setCityNm(String cityNm) {
-        this.cityNm = cityNm;
+    public void setProtectCity(regionVO protectCity) {
+        this.protectCity = protectCity;
     }
 
     public String getHappenDate() {
