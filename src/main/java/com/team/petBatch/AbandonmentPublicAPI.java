@@ -1,5 +1,6 @@
 package com.team.petBatch;
 
+import com.team.vo.AbandonmentVO;
 import com.team.vo.regionVO;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -8,6 +9,7 @@ import org.w3c.dom.NodeList;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class AbandonmentPublicAPI {
@@ -21,13 +23,14 @@ public class AbandonmentPublicAPI {
     }
 
     //공공 API URL 생성 (유기동물 조회)
-    public String createURL(String ServiceKey, String bgnde, String endde, String pageNo, String numOfRows){
+    public String createURL(String ServiceKey, String bgnde, String endde, String pageNo, String numOfRows, String cityCd){
         String requestUrl = "http://openapi.animal.go.kr/openapi/service/rest/abandonmentPublicSrvc/abandonmentPublic?";
         requestUrl += "ServiceKey="+ServiceKey+"&";
         requestUrl += "bgnde="+bgnde+"&";
         requestUrl += "endde="+endde+"&";
         requestUrl += "pageNo="+pageNo+"&";
-        requestUrl += "numOfRows="+numOfRows;
+        requestUrl += "numOfRows="+numOfRows+"&";
+        requestUrl += "org_cd="+cityCd;
 
         return requestUrl;
     }
@@ -61,17 +64,9 @@ public class AbandonmentPublicAPI {
         return regionList;
     }
 
-
-
-
-
-
-
-
-
-
     //request API
-    public void requestAPI(String URL){
+    public ArrayList<AbandonmentVO> requestAPI(String URL, regionVO region, regionVO city){
+        ArrayList<AbandonmentVO> abList = new ArrayList<>();
         try{
             DocumentBuilderFactory dbFactoty = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactoty.newDocumentBuilder();
@@ -79,27 +74,39 @@ public class AbandonmentPublicAPI {
 
             // root tag
             doc.getDocumentElement().normalize();
-
             NodeList nList = doc.getElementsByTagName("item");
 
-            for(int temp = 0; temp < nList.getLength(); temp++){
-                Node nNode = nList.item(temp);
+            for(int i = 0; i < nList.getLength(); i++){
+                Node nNode = nList.item(i);
                 if(nNode.getNodeType() == Node.ELEMENT_NODE){
                     Element eElement = (Element) nNode;
-                    System.out.println("######################");
-                    System.out.println(eElement.getTextContent());
-                    System.out.println("careNm  : " + getTagValue("careNm", eElement));
-                    System.out.println("colorCd  : " + getTagValue("colorCd", eElement));
-                    System.out.println("happenPlace : " + getTagValue("happenPlace", eElement));
-                    System.out.println("kindCd  : " + getTagValue("kindCd", eElement));
-                    System.out.println("specialMark  : " + getTagValue("specialMark", eElement));
+                    Long id = Long.parseLong(getTagValue("desertionNo", eElement));
+                    String ageStr = getTagValue("age", eElement);
+                    if(ageStr.contains("년생")) ageStr = ageStr.replaceAll("\\(년생\\)","");
+                    int age = Integer.parseInt(ageStr);
+                    String kind = getTagValue("kindCd", eElement);
+                    String animalType = (kind.substring(0,kind.indexOf("]"))).replace("[", "");
+                    String kindCd = (kind.substring(kind.indexOf("]")+1)).replaceAll(" ","");
+                    String happenDate = getTagValue("happenDt", eElement);
+                    String happenPlace = getTagValue("happenPlace", eElement);
+                    String careNm = getTagValue("careNm", eElement);
+                    String careAddress = getTagValue("careAddr", eElement);
+                    String thumnail = getTagValue("filename", eElement);
+                    String image = getTagValue("popfile", eElement);
+                    String processState = getTagValue("processState", eElement);
+                    char sexCd = getTagValue("sexCd", eElement).charAt(0);
+                    String specialMark = getTagValue("specialMark", eElement);
+                    String weightStr = getTagValue("weight", eElement);
+                    if(weightStr.contains("Kg")) weightStr = weightStr.replaceAll("\\(Kg\\)","");
+                    Float weight = Float.parseFloat(weightStr);
+
+                    abList.add(new AbandonmentVO(id, age, animalType, kindCd, region, city, happenDate, happenPlace, careNm, careAddress, thumnail, image, processState, sexCd, specialMark, weight));
                 }
             }
-
         }catch(Exception e){
             e.printStackTrace();
         }
-
+        return abList;
     }
 
     //Tag 값 불러오기

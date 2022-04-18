@@ -9,6 +9,7 @@ public class AbandonmentVO {
 
     @Id
     @GeneratedValue
+    @Column(name="abandonment_id")
     private Long id;
     //나이
     private int age;
@@ -18,10 +19,12 @@ public class AbandonmentVO {
     //품종
     private String kindCd;
     //보호 지역 (코드)
-    @Column(nullable = false)
+    @ManyToOne
+    @JoinColumn(name="region_id", insertable = false, updatable = false)
     private regionVO protectRegion;
     //보호 도시 (코드)
-    @Column(nullable = false)
+    @ManyToOne
+    @JoinColumn(name="city_id", insertable = false, updatable = false)
     private regionVO protectCity;
     //발견 날짜
     private String happenDate;
@@ -44,9 +47,9 @@ public class AbandonmentVO {
     //특이사항
     private String specialMark;
     //무게
-    private int weight;
+    private Float weight;
 
-    public AbandonmentVO(Long id, int age, String animalType, String kindCd, regionVO protectRegion, regionVO protectCity, String happenDate, String happenPlace, String careNm, String careAddress, String thumnail, String image, String processState, char sexCd, String specialMark, int weight) {
+    public AbandonmentVO(Long id, int age, String animalType, String kindCd, regionVO protectRegion, regionVO protectCity, String happenDate, String happenPlace, String careNm, String careAddress, String thumnail, String image, String processState, char sexCd, String specialMark, Float weight) {
         this.id = id;
         this.age = age;
         this.animalType = animalType;
@@ -185,11 +188,33 @@ public class AbandonmentVO {
         this.specialMark = specialMark;
     }
 
-    public int getWeight() {
+    public Float getWeight() {
         return weight;
     }
 
-    public void setWeight(int weight) {
+    public void setWeight(Float weight) {
         this.weight = weight;
+    }
+
+    @Override
+    public String toString() {
+        return "AbandonmentVO{" +
+                "id=" + id +
+                ", age=" + age +
+                ", animalType='" + animalType + '\'' +
+                ", kindCd='" + kindCd + '\'' +
+                ", protectRegion=" + protectRegion +
+                ", protectCity=" + protectCity +
+                ", happenDate='" + happenDate + '\'' +
+                ", happenPlace='" + happenPlace + '\'' +
+                ", careNm='" + careNm + '\'' +
+                ", careAddress='" + careAddress + '\'' +
+                ", thumnail='" + thumnail + '\'' +
+                ", image='" + image + '\'' +
+                ", processState='" + processState + '\'' +
+                ", sexCd=" + sexCd +
+                ", specialMark='" + specialMark + '\'' +
+                ", weight=" + weight +
+                '}';
     }
 }
