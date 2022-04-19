@@ -9,21 +9,18 @@ import java.util.List;
 public class regionVO {
 
     @Id
-    @GeneratedValue
     @Column(name="region_id")
     private String id;
 
-    private String upperId;
     private String regionNm;
 
-    @OneToMany(mappedBy = "protectRegion" ,cascade = CascadeType.DETACH)
+    @OneToMany(mappedBy = "protectRegion")
     private List<AbandonmentVO> regions = new ArrayList<>();
 
     public regionVO() {}
 
-    public regionVO(String id, String upperId, String regionNm) {
+    public regionVO(String id, String regionNm) {
         this.id = id;
-        this.upperId = upperId;
         this.regionNm = regionNm;
     }
 
@@ -33,14 +30,6 @@ public class regionVO {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public String getUpperId() {
-        return upperId;
-    }
-
-    public void setUpperId(String upperId) {
-        this.upperId = upperId;
     }
 
     public String getRegionNm() {

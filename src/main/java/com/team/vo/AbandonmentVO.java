@@ -1,31 +1,30 @@
 package com.team.vo;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import com.team.vo.regionVO;
+import com.team.vo.cityVO;
 
 @Entity
 @Table(name = "abandonment")
 public class AbandonmentVO {
 
     @Id
-    @GeneratedValue
     @Column(name="abandonment_id")
     private Long id;
     //나이
     private int age;
     //동물 타입
-    @Column(nullable = false)
     private String animalType;
     //품종
     private String kindCd;
     //보호 지역 (코드)
-    @ManyToOne
-    @JoinColumn(name="region_id", insertable = false, updatable = false)
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name="region_id")
     private regionVO protectRegion;
     //보호 도시 (코드)
-    @ManyToOne
-    @JoinColumn(name="city_id", insertable = false, updatable = false)
-    private regionVO protectCity;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name="city_id")
+    private cityVO protectCity;
     //발견 날짜
     private String happenDate;
     //발견 장소
@@ -39,7 +38,6 @@ public class AbandonmentVO {
     //이미지
     private String image;
     //상태
-    @Column(nullable = false)
     private String processState;
     //성별
     @Column(length = 1)
@@ -49,7 +47,7 @@ public class AbandonmentVO {
     //무게
     private Float weight;
 
-    public AbandonmentVO(Long id, int age, String animalType, String kindCd, regionVO protectRegion, regionVO protectCity, String happenDate, String happenPlace, String careNm, String careAddress, String thumnail, String image, String processState, char sexCd, String specialMark, Float weight) {
+    public AbandonmentVO(Long id, int age, String animalType, String kindCd, regionVO protectRegion, cityVO protectCity, String happenDate, String happenPlace, String careNm, String careAddress, String thumnail, String image, String processState, char sexCd, String specialMark, Float weight) {
         this.id = id;
         this.age = age;
         this.animalType = animalType;
@@ -108,11 +106,11 @@ public class AbandonmentVO {
         this.protectRegion = protectRegion;
     }
 
-    public regionVO getProtectCity() {
+    public cityVO getProtectCity() {
         return protectCity;
     }
 
-    public void setProtectCity(regionVO protectCity) {
+    public void setProtectCity(cityVO protectCity) {
         this.protectCity = protectCity;
     }
 

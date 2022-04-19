@@ -1,6 +1,7 @@
 package com.team.petBatch;
 
 import com.team.vo.AbandonmentVO;
+import com.team.vo.cityVO;
 import com.team.vo.regionVO;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -36,7 +37,7 @@ public class AbandonmentPublicAPI {
     }
 
     //request RegionAPI
-    public ArrayList<regionVO> requestRegionAPI(String URL, String flag){
+    public ArrayList<regionVO> requestRegionAPI(String URL){
         ArrayList<regionVO> regionList = new ArrayList<>();
         try{
             DocumentBuilderFactory dbFactoty = DocumentBuilderFactory.newInstance();
@@ -53,9 +54,35 @@ public class AbandonmentPublicAPI {
                     Element eElement = (Element) nNode;
                     String orgCd = getTagValue("orgCd", eElement);
                     String orgDownNm = getTagValue("orgdownNm", eElement);
-                    String upperId = "";
-                    if(flag.equals("city")) upperId = getTagValue("uprCd", eElement);
-                    regionList.add(new regionVO(orgCd,upperId,orgDownNm));
+                    regionList.add(new regionVO(orgCd,orgDownNm));
+                }
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return regionList;
+    }
+
+    //request CityAPI
+    public ArrayList<cityVO> requestCityAPI(String URL){
+        ArrayList<cityVO> regionList = new ArrayList<>();
+        try{
+            DocumentBuilderFactory dbFactoty = DocumentBuilderFactory.newInstance();
+            DocumentBuilder dBuilder = dbFactoty.newDocumentBuilder();
+            Document doc = dBuilder.parse(URL);
+
+            // root tag
+            doc.getDocumentElement().normalize();
+            NodeList nList = doc.getElementsByTagName("item");
+
+            for(int i = 0; i < nList.getLength(); i++){
+                Node nNode = nList.item(i);
+                if(nNode.getNodeType() == Node.ELEMENT_NODE){
+                    Element eElement = (Element) nNode;
+                    String orgCd = getTagValue("orgCd", eElement);
+                    String orgDownNm = getTagValue("orgdownNm", eElement);
+                    String uprCd = getTagValue("uprCd", eElement);
+                    regionList.add(new cityVO(orgCd,uprCd,orgDownNm));
                 }
             }
         }catch(Exception e){
@@ -65,8 +92,7 @@ public class AbandonmentPublicAPI {
     }
 
     //request API
-    public ArrayList<AbandonmentVO> requestAPI(String URL, regionVO region, regionVO city){
-        ArrayList<AbandonmentVO> abList = new ArrayList<>();
+    public void requestAPI(String URL, regionVO region, cityVO city, ArrayList<AbandonmentVO> abList){
         try{
             DocumentBuilderFactory dbFactoty = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactoty.newDocumentBuilder();
@@ -106,7 +132,6 @@ public class AbandonmentPublicAPI {
         }catch(Exception e){
             e.printStackTrace();
         }
-        return abList;
     }
 
     //Tag 값 불러오기

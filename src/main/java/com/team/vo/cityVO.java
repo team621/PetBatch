@@ -4,17 +4,18 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
+@Table(name="city")
 public class cityVO {
 
     @Id
-    @GeneratedValue
     @Column(name="city_id")
     private String id;
 
     private String upperId;
     private String regionNm;
 
-    @OneToMany(mappedBy = "protectCity", cascade = CascadeType.DETACH)
+    @OneToMany(mappedBy = "protectCity")
     private List<AbandonmentVO> cities = new ArrayList<>();
 
     public cityVO() {}
