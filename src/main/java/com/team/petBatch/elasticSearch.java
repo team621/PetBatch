@@ -14,14 +14,7 @@ public class elasticSearch{
             HttpURLConnection conn = null;
             JSONObject responseJson = null;
 
-            String ELASTICSEARCH_URL = "http://127.0.0.1:9200/classes?pretty";
-            URL url = new URL(ELASTICSEARCH_URL);
-
-            conn = (HttpURLConnection)url.openConnection();
-            conn.setConnectTimeout(5000);
-            conn.setReadTimeout(5000);
-            conn.setRequestMethod("GET");
-            //conn.setDoOutput(true);
+            conn = requestURI("abandonment", "GET", conn);
 
             JSONObject commands = new JSONObject();
 
@@ -29,9 +22,11 @@ public class elasticSearch{
             StringBuilder sb = new StringBuilder();
 
             System.out.println("responseCode = " + responseCode);
-            if (responseCode == 400 || responseCode == 401 || responseCode == 500 ) {
+            if (responseCode == 400 || responseCode == 401 || responseCode == 500) {
                 System.out.println(responseCode + " Error!");
-            } else {
+            }else if(responseCode == 404){
+                conn = requestURI("abandonment", "PUT", conn);
+            }else {
                 BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
                 String line = "";
                 while ((line = br.readLine()) != null) {
@@ -39,15 +34,24 @@ public class elasticSearch{
                 }
             }
                 System.out.println(sb.toString());
-
         }catch(Exception e){
-
+            e.printStackTrace();
         }
     }
 
+    public static HttpURLConnection requestURI(String uri, String method, HttpURLConnection conn){
+        try{
+            String esServer = "http://127.0.0.1:9200/";
+            String ELASTICSEARCH_URL = esServer+uri;
+            URL url = new URL(ELASTICSEARCH_URL);
 
-
-
-
-
+            conn = (HttpURLConnection)url.openConnection();
+            conn.setConnectTimeout(5000);
+            conn.setReadTimeout(5000);
+            conn.setRequestMethod(method);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return conn;
+    }
 }

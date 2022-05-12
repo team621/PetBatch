@@ -11,17 +11,21 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import java.util.ArrayList;
+import java.util.List;
 
 @SpringBootApplication
 public class PetBatchApplication {
 
     public static void main(String[] args) {
         //API 데이터 DB 저장
-        //saveAPIData(args[0], args[1]);
-        
+        saveAPIData(args[0], args[1]);
+
+        //DB 데이터 가져오기
+        DBData db = new DBData();
+
         //엘라스틱 서치
-        elasticSearch es = new elasticSearch();
-        es.elastic();
+        //elasticSearch es = new elasticSearch();
+        //es.elastic();
         //스프링부트 서버 실행
         //SpringApplication.run(PetBatchApplication.class, args);
     }

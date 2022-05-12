@@ -4,7 +4,7 @@ import javax.persistence.*;
 import com.team.vo.regionVO;
 import com.team.vo.cityVO;
 
-@Entity
+@Entity(name ="abandonment")
 @Table(name = "abandonment")
 public class AbandonmentVO {
 
@@ -46,6 +46,8 @@ public class AbandonmentVO {
     private String specialMark;
     //무게
     private Float weight;
+
+    public AbandonmentVO(){};
 
     public AbandonmentVO(Long id, int age, String animalType, String kindCd, regionVO protectRegion, cityVO protectCity, String happenDate, String happenPlace, String careNm, String careAddress, String thumnail, String image, String processState, char sexCd, String specialMark, Float weight) {
         this.id = id;
