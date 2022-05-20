@@ -18,10 +18,12 @@ public class PetBatchApplication {
 
     public static void main(String[] args) {
         //API 데이터 DB 저장
-        saveAPIData(args[0], args[1]);
+        //saveAPIData(args[0], args[1]);
 
         //DB 데이터 가져오기
         DBData db = new DBData();
+        db.mkJson(db.getDBData());
+
 
         //엘라스틱 서치
         //elasticSearch es = new elasticSearch();
@@ -46,7 +48,7 @@ public class PetBatchApplication {
             ArrayList<cityVO> cityList = API.requestCityAPI(cityURL);
             for(int j=0; j<cityList.size(); j++){
                 //공공 API URL 생성(유기 동물 조회)
-                String abandonmentURL = API.createURL(servieKey,startDt,endDt,"1","10",cityList.get(j).getId());
+                String abandonmentURL = API.createURL(servieKey,startDt,endDt,"1","1",cityList.get(j).getId());
                 API.requestAPI(abandonmentURL, regionList.get(i), cityList.get(j), abList);
             }
         }

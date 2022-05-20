@@ -2,6 +2,8 @@ package com.team.petBatch;
 
 import com.team.vo.AbandonmentVO;
 import com.team.vo.cityVO;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -10,8 +12,7 @@ import javax.persistence.Persistence;
 import java.util.List;
 
 public class DBData {
-//em이 초기화되면 데이터가 안보임
-    public void getDBData(){
+    public List<AbandonmentVO> getDBData() {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("batch");
         EntityManager em = emf.createEntityManager();
         EntityTransaction tx = em.getTransaction();
@@ -20,35 +21,62 @@ public class DBData {
         AbandonmentVO vo = new AbandonmentVO();
         cityVO voc = new cityVO();
 
-/*        voc.setId("1");
-        em.persist(voc);
-        vo.setId(1L);
-        vo.setProtectCity(voc);
-
-        em.persist(vo);*/
-
-
         em.flush();
         em.clear();
 
-        String query = "SELECT a FROM abandonment a inner join a.protectCity c inner join a.protectRegion r";
-        try{
-            List<AbandonmentVO> resultList = em.createQuery(query, AbandonmentVO.class).getResultList();
+        String query =
+                "SELECT a FROM abandonment a inner join a.protectCity c inner join a.protectRegion r";
+        List<AbandonmentVO> resultList = null;
+        try {
+            resultList = em.createQuery(query, AbandonmentVO.class).getResultList();
             for (AbandonmentVO abandonmentVO : resultList) {
-                System.out.println("abandonmentVO = " + abandonmentVO);
                 System.out.println("abandonmentVO.getProtectCity().getId() = " + abandonmentVO.getProtectCity().getId());
             }
-
             tx.commit();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             tx.rollback();
-        }finally {
+        } finally {
             em.close();
         }
         emf.close();
-
+        return resultList;
     }
 
+    public void mkJson(List<AbandonmentVO> list){
+        JSONArray jsonArray = new JSONArray();
+        JSONObject jjj = new JSONObject();
+
+        for (AbandonmentVO abandonmentVO : list) {
+            JSONObject jsonObject = new JSONObject();
+
+            jsonObject.put("id", Long.toString(abandonmentVO.getId()));
+            jsonObject.put("age",Integer.toString(abandonmentVO.getAge()));
+            jsonObject.put("animalType",abandonmentVO.getAnimalType());
+            jsonObject.put("careAddress",abandonmentVO.getCareAddress());
+            jsonObject.put("cityId",abandonmentVO.getProtectCity().getId());
+            jsonObject.put("cityNm",abandonmentVO.getProtectCity().getRegionNm());
+            jsonObject.put("regionId",abandonmentVO.getProtectRegion().getId());
+            jsonObject.put("regionNm", abandonmentVO.getProtectRegion().getRegionNm());
+            jsonObject.put("careNm",abandonmentVO.getCareNm());
+            jsonObject.put("happenDate",abandonmentVO.getHappenDate());
+            jsonObject.put("happenPlace",abandonmentVO.getHappenPlace());
+            jsonObject.put("image",abandonmentVO.getImage());
+            jsonObject.put("kindCd",abandonmentVO.getKindCd());
+            jsonObject.put("sexCd",Character.toString(abandonmentVO.getSexCd()));
+            jsonObject.put("weight",Float.toString(abandonmentVO.getWeight()));
+            jsonObject.put("processState",abandonmentVO.getProcessState());
+            jsonObject.put("specialMark",abandonmentVO.getSpecialMark());
+            jsonObject.put("thumnail",abandonmentVO.getThumnail());
+
+            jjj.put("result",jsonObject);
+
+            jsonArray.add(jsonObject);
+        }
+
+        System.out.println("jsonArray = " + jsonArray);
+
+
+    }
 
 }
