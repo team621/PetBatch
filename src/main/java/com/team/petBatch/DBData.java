@@ -45,11 +45,11 @@ public class DBData {
 
     public void mkJson(List<AbandonmentVO> list){
         JSONArray jsonArray = new JSONArray();
-        JSONObject jjj = new JSONObject();
+        JSONObject resultJson = new JSONObject();
 
         for (AbandonmentVO abandonmentVO : list) {
             JSONObject jsonObject = new JSONObject();
-
+//리스트 안에 vo를 넘겨서 거기서 하나씩 만들기?
             jsonObject.put("id", Long.toString(abandonmentVO.getId()));
             jsonObject.put("age",Integer.toString(abandonmentVO.getAge()));
             jsonObject.put("animalType",abandonmentVO.getAnimalType());
@@ -69,14 +69,12 @@ public class DBData {
             jsonObject.put("specialMark",abandonmentVO.getSpecialMark());
             jsonObject.put("thumnail",abandonmentVO.getThumnail());
 
-            jjj.put("result",jsonObject);
+            resultJson.put("result",jsonObject);
 
             jsonArray.add(jsonObject);
         }
 
         System.out.println("jsonArray = " + jsonArray);
-
-
     }
 
 }

@@ -24,10 +24,10 @@ public class PetBatchApplication {
         DBData db = new DBData();
         db.mkJson(db.getDBData());
 
-
         //엘라스틱 서치
         //elasticSearch es = new elasticSearch();
         //es.elastic();
+
         //스프링부트 서버 실행
         //SpringApplication.run(PetBatchApplication.class, args);
     }

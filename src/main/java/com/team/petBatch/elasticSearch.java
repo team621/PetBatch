@@ -49,6 +49,9 @@ public class elasticSearch{
             conn.setConnectTimeout(5000);
             conn.setReadTimeout(5000);
             conn.setRequestMethod(method);
+
+            int responseCode = conn.getResponseCode();
+            System.out.println("responseCode = " + responseCode);
         }catch (Exception e){
             e.printStackTrace();
         }
