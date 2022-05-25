@@ -44,37 +44,14 @@ public class DBData {
     }
 
     public void mkJson(List<AbandonmentVO> list){
-        JSONArray jsonArray = new JSONArray();
-        JSONObject resultJson = new JSONObject();
+        String result = "";
 
-        for (AbandonmentVO abandonmentVO : list) {
-            JSONObject jsonObject = new JSONObject();
-//리스트 안에 vo를 넘겨서 거기서 하나씩 만들기?
-            jsonObject.put("id", Long.toString(abandonmentVO.getId()));
-            jsonObject.put("age",Integer.toString(abandonmentVO.getAge()));
-            jsonObject.put("animalType",abandonmentVO.getAnimalType());
-            jsonObject.put("careAddress",abandonmentVO.getCareAddress());
-            jsonObject.put("cityId",abandonmentVO.getProtectCity().getId());
-            jsonObject.put("cityNm",abandonmentVO.getProtectCity().getRegionNm());
-            jsonObject.put("regionId",abandonmentVO.getProtectRegion().getId());
-            jsonObject.put("regionNm", abandonmentVO.getProtectRegion().getRegionNm());
-            jsonObject.put("careNm",abandonmentVO.getCareNm());
-            jsonObject.put("happenDate",abandonmentVO.getHappenDate());
-            jsonObject.put("happenPlace",abandonmentVO.getHappenPlace());
-            jsonObject.put("image",abandonmentVO.getImage());
-            jsonObject.put("kindCd",abandonmentVO.getKindCd());
-            jsonObject.put("sexCd",Character.toString(abandonmentVO.getSexCd()));
-            jsonObject.put("weight",Float.toString(abandonmentVO.getWeight()));
-            jsonObject.put("processState",abandonmentVO.getProcessState());
-            jsonObject.put("specialMark",abandonmentVO.getSpecialMark());
-            jsonObject.put("thumnail",abandonmentVO.getThumnail());
+        for(int i=0; i<list.size(); i++){
+        result += "{\"index\":{\"_id\":\""+i+"\"}}";
+        result += "{\"id\":\""+list.get(i).getId()+"\"},";
 
-            resultJson.put("result",jsonObject);
+        System.out.println("result = " + result);
 
-            jsonArray.add(jsonObject);
         }
-
-        System.out.println("jsonArray = " + jsonArray);
     }
-
 }
