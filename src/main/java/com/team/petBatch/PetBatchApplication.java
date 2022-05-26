@@ -3,6 +3,7 @@ package com.team.petBatch;
 import com.team.vo.AbandonmentVO;
 import com.team.vo.cityVO;
 import com.team.vo.regionVO;
+import org.json.simple.JSONArray;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -22,11 +23,11 @@ public class PetBatchApplication {
 
         //DB 데이터 가져오기
         DBData db = new DBData();
-        db.mkJson(db.getDBData());
+        JSONArray resultArrays = db.mkJson(db.getDBData());
 
         //엘라스틱 서치
-        //elasticSearch es = new elasticSearch();
-        //es.elastic();
+        elasticSearch es = new elasticSearch();
+        es.elastic(resultArrays);
 
         //스프링부트 서버 실행
         //SpringApplication.run(PetBatchApplication.class, args);

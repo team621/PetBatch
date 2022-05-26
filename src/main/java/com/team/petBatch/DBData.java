@@ -43,15 +43,35 @@ public class DBData {
         return resultList;
     }
 
-    public void mkJson(List<AbandonmentVO> list){
+    public JSONArray mkJson(List<AbandonmentVO> list){
         String result = "";
+        JSONArray resultArray = new JSONArray();
 
         for(int i=0; i<list.size(); i++){
-        result += "{\"index\":{\"_id\":\""+i+"\"}}";
-        result += "{\"id\":\""+list.get(i).getId()+"\"},";
+            JSONObject resultObject = new JSONObject();
 
-        System.out.println("result = " + result);
+            resultObject.put("id",list.get(i).getId());
+            resultObject.put("thumnail",list.get(i).getThumnail());
+            resultObject.put("specialmark",list.get(i).getSpecialMark());
+            resultObject.put("processState",list.get(i).getProcessState());
+            resultObject.put("weight",list.get(i).getWeight());
+            resultObject.put("sexCd",list.get(i).getSexCd());
+            resultObject.put("kindCd",list.get(i).getKindCd());
+            resultObject.put("image",list.get(i).getImage());
+            resultObject.put("happenPlace",list.get(i).getHappenPlace());
+            resultObject.put("happenDate",list.get(i).getHappenDate());
+            resultObject.put("careNm",list.get(i).getCareNm());
+            resultObject.put("careAddress",list.get(i).getCareAddress());
+            resultObject.put("age",list.get(i).getAge());
+            resultObject.put("animalType",list.get(i).getAnimalType());
+            resultObject.put("protectCityId",list.get(i).getProtectCity().getId());
+            resultObject.put("protectCityNm",list.get(i).getProtectCity().getRegionNm());
+            resultObject.put("protectRegionId",list.get(i).getProtectRegion().getId());
+            resultObject.put("protectRegionNm",list.get(i).getProtectRegion().getRegionNm());
 
+            resultArray.add(resultObject);
         }
+
+        return resultArray;
     }
 }
